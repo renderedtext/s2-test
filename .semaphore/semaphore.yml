@@ -27,5 +27,5 @@ blocks:
       - name: "run"
         commands:
           - checkout
-          - cache restore bundler-$(checksum Gemfile.lock)
+            #- cache restore bundler-$(checksum Gemfile.lock)
           - bundle exec rake
