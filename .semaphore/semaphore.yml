@@ -1,0 +1,31 @@
+version: v1.0
+name: First pipeline example
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Install and cache deps"
+    task:
+      env_vars:
+        - name: BUNDLE_PATH
+          value: vendor/bundle
+      jobs:
+      - name: "Install and cache deps"
+        commands:
+          - checkout
+          - bundle install
+          - cache store bundler-$(checksum Gemfile.lock) vendor/bundle
+
+  - name: "Run"
+    task:
+      env_vars:
+        - name: BUNDLE_PATH
+          value: vendor/bundle
+      jobs:
+      - name: "run"
+        commands:
+          - checkout
+          - cache restore bundler-$(checksum Gemfile.lock)
+          - bundle exec rake
